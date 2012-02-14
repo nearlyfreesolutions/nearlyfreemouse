@@ -55,3 +55,9 @@ install: $(APPNAME)
 win32: dummy
 	~/.wine/drive_c/Borland/BCC55/Bin/bcc32.exe -wall -I/home/`whoami`/.wine/drive_c/Borland/BCC55/Include/ -c $(FILESC)
 
+commit: clean
+	git add .
+	git commit -a
+	git push
+
+
