@@ -52,7 +52,7 @@ install: $(APPNAME)
 	install -D $(APPNAME).desktop $(DESTDIR)/usr/share/doc/$(APPNAME)/$(APPNAME).desktop
 	install -D $(APPNAME).autostart $(DESTDIR)/usr/share/doc/$(APPNAME)/$(APPNAME).autostart
 
-win32: dummy
+win32: clean
 	~/.wine/drive_c/Borland/BCC55/Bin/bcc32.exe -wall -I/home/`whoami`/.wine/drive_c/Borland/BCC55/Include/ -c $(FILESC)
 
 commit: clean

@@ -20,7 +20,6 @@ Boston, MA  02110-1301, USA.
 
 #include "xdo.h"
 
-
 #if defined(__CYGWIN__)
 
 #include <sys/cygwin.h>

@@ -18,15 +18,25 @@ Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
 Boston, MA  02110-1301, USA.
 */
 
-#define String const char *
-
+static String _esc = "ESC";
+	static String _super = "Super";
+	static String _alttab = "Alt+Tab";
+	static String _rclick = "R Click";
+	static String _lclick = "L Click";
+	static String _ldclick = "LDClk";
+	static String _del = "DEL";
+	static String _altf4 = "Alt+F4";
+	static String _space_b = "Space";
+	static String _keybd = "Keybd";
+	static String _upgrade = "Upgrade!";
+	
 	static String _dollar = "dollar";
 	static String _percent = "percent";
 	static String _ampersand = "ampersand";
 	static String _parenleft = "parenleft";
 	static String _parenright = "parenright";
 	static String _exclam = "exclam";
-
+	//static String _ =
 	static String _space = "space";
 	static String _backspace = "BackSpace";
 	static String _return = "Return";
@@ -49,8 +59,8 @@ Boston, MA  02110-1301, USA.
 	static String _question = "question";
 	static String _quotedbl = "quotedbl";
 	static String _colon = "colon";
-
-    static String _grave = "grave";
+	
+	static String _grave = "grave";
 	static String _tilde = "asciitilde";
 	static String _pipe = "bar";
 	static String _braceleft = "braceleft";
@@ -59,9 +69,11 @@ Boston, MA  02110-1301, USA.
 	static String _bracketright = "bracketright";
 	static String _equal = "equal";
 	static String _underscore = "underscore";
-    static String _division = "division";
+	static String _division = "division";
 	static String _multiply = "multiply";
 	static String _caret = "caret";
-	static String _leftanglebracket  = "leftanglebracket ";
-	static String _righttanglebracket  = "rightanglebracket ";
+	static String _leftanglebracket  = "leftanglebracket";
+	static String _righttanglebracket  = "rightanglebracket";
+	static String _eurosign = "EuroSign";
+	static String _poundsign = "poundsigndoesntexist";
 

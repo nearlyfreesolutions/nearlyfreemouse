@@ -27,10 +27,17 @@ Boston, MA  02110-1301, USA.
 #       include <xdo.h>
         typedef Window XDOWindow;
 
-#   elif defined(__CYGWIN__)
+#   elif defined(__CYGWIN__) || defined(__WIN32__)
 
-#      include <w32api/windows.h>
-#      include <unistd.h>
+#   ifdef __CYGWIN__
+#       include <w32api/windows.h>
+#       include <unistd.h>
+#   else
+#       include <windows.h>
+        extern int getopt(int argc,char **argv,char *);
+        extern char *optarg;
+#   endif
+
 
 #      define CURRENTWINDOW 0
         typedef void *xdo_t;

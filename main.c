@@ -17,15 +17,14 @@ License along with this library; if not, write to the
 Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
 Boston, MA  02110-1301, USA.
 */
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
 
 #include "main.h"
 #include "msgs.h"
 #include "udp.h"
 #include "buffer.h"
-
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
 
 buffer_callback_fn _dispatch[0x10];
 Options _options;
@@ -45,7 +44,7 @@ int main(int argc,char **argv)
             {
                 test();
             }
-            udp_close(_options._socket);
+            udp_closesocket(_options._socket);
         }
         else
         {
@@ -132,7 +131,7 @@ void test(void)
 
     while(!done)
     {
-        done=(udp_read(_options._socket)<0);
+        done=(uint8)(udp_read(_options._socket)<0);
         ansleep(25);
     }
 }
@@ -142,7 +141,8 @@ void getdim(double *w,double *h,int screen)
 #if defined(linux)
     *w=DisplayWidth(_options._xdo->xdpy,screen);
     *h=DisplayHeight(_options._xdo->xdpy,screen);
-#elif defined(__CYGWIN__)
+#elif defined(__CYGWIN__)||defined(__WIN32__)
+    (void)screen;
     xdo_desktop_size(w,h);
 #endif
 }
@@ -208,11 +208,15 @@ uint8 parse_args(Options *options,int argc,char **argv)
 
 void ansleep(uint32 l)
 {
+#if defined(__linux)||defined(__CYGWIN__)
     struct timespec spec,rem;
 
     spec.tv_sec=l/1000;
     spec.tv_nsec=(l-(spec.tv_sec*1000))*1000000;
     nanosleep(&spec,&rem);
+#else
+    Sleep(l);
+#endif
 }
 
 void hexdump(uint8 *data,uint32 len)
@@ -235,19 +239,19 @@ void buffer_listener(uint8 *data,uint32 len)
         uint8 fn=*data;
         if(fn>=0xf0)
         {
-            uint8 valid=fn==0xff;
+            uint8 valid=(uint8)(fn==0xff);
             if(!valid)
             {
                 // check the code..
                 if(len>=sizeof(MsgHdr))
                 {
                     MsgHdr *hdr=(MsgHdr *)data;
-                    valid=!memcmp(hdr->_code,_options._code,sizeof(hdr->_code));
+                    valid=(uint8)(!memcmp(hdr->_code,_options._code,sizeof(hdr->_code)));
                 }
             }
             if(valid)
             {
-                fn-=0xf0;
+                fn-=(uint8)0xf0;
                 (*(_dispatch+fn))(data,len);
             }
             else
@@ -274,6 +278,8 @@ void dispatch_whosthere(uint8 *data,uint32 len)
 {
     static MsgServer weare;
 
+    (void)data;
+    (void)len;
     memset(&weare,0,sizeof(MsgServer));
     weare._hdr._type=MSG_SERVER;
     weare._term._term=0xff;

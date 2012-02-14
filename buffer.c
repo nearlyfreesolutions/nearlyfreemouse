@@ -22,18 +22,11 @@ Boston, MA  02110-1301, USA.
 #include <stdio.h>
 #include <string.h>
 
-static uint8 _buffer[512];
+#define _buffer_max 512
+static uint8 _buffer[_buffer_max];
 static uint32 _buffer_length = 0;
 
 extern void hexdump(uint8 *,uint32);
-
-//#if defined(linux)
-static const uint32 _buffer_max = (sizeof(_buffer)/sizeof(*_buffer));
-/*
-#elif defined(__WIN32__)
-#define _buffer_max  (sizeof(_buffer)/sizeof(*_buffer))
-#endif
-*/
 
 buffer_callback_fn _buffer_callback = 0;
 

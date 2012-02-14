@@ -18,27 +18,39 @@ Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
 Boston, MA  02110-1301, USA.
 */
 
-#ifndef UDP_H
+#ifndef NFM_XDO_H
 
-#   define UDP_H
-
-#   include "types.h"
+#   define NFM_XDO_H
 
 #   if defined(linux)
-#       include <netdb.h>
-#   elif defined(__WIN32__)
-#       include <winsock.h>
-        typedef SOCKET UDPSocket;
-        typedef int socklen_t;
-#   endif
 
-    int udp_connect(uint16 port);
-    int udp_bind(uint16 port,uint8 bnd);
-    void udp_closesocket(int socket);
-    int udp_read(int socket);
-    int udp_broadcast(int,uint16,const void *,uint32);
-    void udp_get_sender(struct sockaddr_storage *sender_address,
-                        socklen_t *sender_len);
+#       include <xdo.h>
+        typedef Window XDOWindow;
+
+#   elif defined(__CYGWIN__) || defined(__WIN32__)
+
+#   ifdef __CYGWIN__
+#       include <w32api/windows.h>
+#   else
+#       include <windows.h>
+#   endif
+#      include <unistd.h>
+
+#      define CURRENTWINDOW 0
+        typedef void *xdo_t;
+        typedef HWND XDOWindow;
+        xdo_t xdo_new(void *);
+        void xdo_free(xdo_t);
+        void xdo_keysequence(xdo_t,XDOWindow,char *,int);
+        void xdo_mousedown(xdo_t,XDOWindow,int);
+        void xdo_mouselocation(xdo_t,int *,int *,int *);
+        void xdo_mousemove(xdo_t,int,int,int);
+        void xdo_mouseup(xdo_t,XDOWindow,int);
+        void xdo_window_get_active(xdo_t,XDOWindow *);
+
+        void xdo_desktop_size(double *w,double *h);
+
+#   endif
 
 #endif
 

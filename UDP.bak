@@ -78,7 +78,7 @@ int udp_bind(uint16 port,uint8 bnd)
             }
             else
             {
-                udp_closesocket(fd);
+                closesocket(fd);
                 fd=UDPInvalidSocket;
             }
         }
@@ -94,7 +94,7 @@ int udp_bind(uint16 port,uint8 bnd)
             }
             else
             {
-                udp_closesocket(fd);
+                closesocket(fd);
                 fd=UDPInvalidSocket;
             }
         }
@@ -140,7 +140,7 @@ int udp_read(int socket)
                 uint8 buffer[256];
 		        _sender_len=sizeof(_sender_address);
                 switch(i=recvfrom(socket,
-                                  (void *)buffer,
+                                  buffer,
                                   sizeof(buffer),
                                   0,
                                   (struct sockaddr *)&_sender_address,
