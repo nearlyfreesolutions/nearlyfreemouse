@@ -1,0 +1,13 @@
+Source: nearlyfreemouse
+Section: devel
+Priority: extra
+Maintainer: Nearly Free Solutions <nearlyfreesolutions@gmail.com>
+Build-Depends: debhelper (>= 7), libxdo-dev (>= 1:2.20100524.2888)
+Standards-Version: 3.8.0
+Homepage: http://www.nearlyfreesolutions.com/apps/nearlyfreemouse
+
+Package: nearlyfreemouse
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Nearly Free Solutions Mouse
+ Turn your android device into a wireless mouse.

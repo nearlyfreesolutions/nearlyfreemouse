@@ -1,0 +1,13 @@
+
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Nearly Free Mouse
+Type=Application
+Exec=/usr/bin/nearlyfreemouse
+Terminal=false
+Icon=
+Comment=Turn your Android device into a wireless mouse.
+Categories=Utility;
+Hidden=false
+X-GNOME-Autostart-enabled=true

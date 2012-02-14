@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Copyright 2011 Nearly Free Solutions <nearlyfreesolutions@gmail.com>
+#
+
+dir=`pwd`
+cd ${HOME}/.config/autostart
+
+echo
+echo
+if [ -e nearlyfreemouse.desktop ]; then
+    echo Autostart file already in place.
+else
+    echo Linking autostart file.
+    ln -sf /usr/share/doc/nearlyfreemouse/nearlyfreemouse.desktop .
+fi
+
+cd ${dir}
+echo
