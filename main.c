@@ -28,9 +28,64 @@ Boston, MA  02110-1301, USA.
 
 buffer_callback_fn _dispatch[0x10];
 Options _options;
+int _done = 0;
+
+void go(int argc,char **argv);
+int done(void);
+void quit(void);
 
 #if !defined(__WIN32__)
+
 int main(int argc,char **argv)
+{
+    go(argv,argv);
+    return(0);
+}
+
+void os_work(void)
+{
+}
+
+int done(void)
+{
+    return(_done);
+}
+
+void quit(void)
+{
+    _done=1;
+}
+
+#else
+
+// include the windows mess..
+#include "windows.c"
+
+#endif
+
+void init(void)
+{
+    uint32 i;
+
+    _options._socket=-1;
+    _options._port=5840;
+    _options._test=0;
+    _options._sleep=5;
+    _options._display=0;
+    memcpy(_options._code,"NFS!",sizeof(_options._code));
+    buffer_callback(buffer_listener);
+    for(i=0;i<sizeof(_dispatch)/sizeof(*_dispatch);++i)
+    {
+        *(_dispatch+i)=no_dispatch;
+    }
+    *(_dispatch+MSG_SERVER-0xf0)=dispatch_ignore;       // ignore our response
+    *(_dispatch+MSG_MOUSE-0xf0)=dispatch_mouse;
+    *(_dispatch+MSG_KEY-0xf0)=dispatch_key;
+    *(_dispatch+MSG_PING-0xf0)=dispatch_ping;
+    *(_dispatch+MSG_WHOSTHERE-0xf0)=dispatch_whosthere;
+}
+
+void go(int argc,char **argv)
 {
     init();
     if(parse_args(&_options,argc,argv))
@@ -56,58 +111,22 @@ int main(int argc,char **argv)
     {
         printf("Usage: nearlyfreemouse [-p port] [-c code] [-d display]\n");
     }
-    return(0);
-}
-#else
-int PASCAL WinMain
-(
-    HINSTANCE hCurInstance,
-    HINSTANCE hPrevInstance,
-    LPSTR lpCmdLine,
-    int nCmdShow
-)
-{
-    (void)hCurInstance;
-    (void)hPrevInstance;
-    (void)lpCmdLine;
-    (void)nCmdShow;
-    return(0);
-}
-#endif
-
-void init(void)
-{
-    uint32 i;
-
-    _options._socket=-1;
-    _options._port=5840;
-    _options._test=0;
-    _options._sleep=5;
-    _options._display=0;
-    memcpy(_options._code,"NFS!",sizeof(_options._code));
-    buffer_callback(buffer_listener);
-    for(i=0;i<sizeof(_dispatch)/sizeof(*_dispatch);++i)
-    {
-        *(_dispatch+i)=no_dispatch;
-    }
-    *(_dispatch+MSG_SERVER-0xf0)=dispatch_ignore;       // ignore our response
-    *(_dispatch+MSG_MOUSE-0xf0)=dispatch_mouse;
-    *(_dispatch+MSG_KEY-0xf0)=dispatch_key;
-    *(_dispatch+MSG_PING-0xf0)=dispatch_ping;
-    *(_dispatch+MSG_WHOSTHERE-0xf0)=dispatch_whosthere;
 }
 
 void run(void)
 {
-    uint8 done=0;
     int n;
 
     _options._xdo=xdo_new(_options._display);
     if(_options._xdo)
     {
-        while(!done)
+        while(!done())
         {
-            done=(uint8)((n=udp_read(_options._socket))<0);
+            os_work();
+            if((n=udp_read(_options._socket))<0)
+            {
+                quit();
+            }
             if(!n)
             {
                 ansleep(_options._sleep);
@@ -158,7 +177,7 @@ void getdim(double *w,double *h,int screen)
 #if defined(linux)
     *w=DisplayWidth(_options._xdo->xdpy,screen);
     *h=DisplayHeight(_options._xdo->xdpy,screen);
-#elif defined(__CYGWIN__)||defined(__WIN32__)
+#else
     (void)screen;
     xdo_desktop_size(w,h);
 #endif

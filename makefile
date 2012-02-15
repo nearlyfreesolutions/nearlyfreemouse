@@ -45,6 +45,7 @@ clean: tilde
 	find ./ -name \*.obj | xargs rm -f
 	find ./ -name \*.a | xargs rm -f
 	find ./ -name \*.exe | xargs rm -f
+	rm -f *.map *.tds *.ils *.ilf *.ild *.ilc turboc*
 	rm -f $(APPNAME)
 
 install: $(APPNAME)
@@ -53,7 +54,7 @@ install: $(APPNAME)
 	install -D $(APPNAME).autostart $(DESTDIR)/usr/share/doc/$(APPNAME)/$(APPNAME).autostart
 
 win32: clean
-	~/.wine/drive_c/Borland/BCC55/Bin/bcc32.exe -wall -I/home/`whoami`/.wine/drive_c/Borland/BCC55/Include/ -c $(FILESC)
+	~/.wine/drive_c/Borland/BCC55/Bin/bcc32.exe -wall -Ic:\\Borland\\BCC55\\Include -o$(APPNAME).exe $(FILESC)
 
 commit: clean
 	git add .

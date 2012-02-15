@@ -28,6 +28,7 @@ Boston, MA  02110-1301, USA.
 #else
 #   include <windows.h>
 
+#if (__BORLANDC__ < 0x0550)
 // fail on bc5
 #define INPUT_KEYBOARD    1
 #define INPUT_MOUSE       2
@@ -38,8 +39,8 @@ typedef struct {
         struct Mouse { int wVk; int dwFlags; } mi;
     };
 } INPUT;
-void SendInput(int,INPUT *,int);
-
+void SendInput(int i,INPUT *in,int l){(void)i;(void)in;(void)l;}
+#endif
 #endif
 
 
