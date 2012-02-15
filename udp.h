@@ -27,6 +27,7 @@ Boston, MA  02110-1301, USA.
 #   if defined(linux)
 #       include <netdb.h>
 #   elif defined(__WIN32__)
+#       define sockaddr_storage     sockaddr_in
 #       include <winsock.h>
         typedef SOCKET UDPSocket;
         typedef int socklen_t;

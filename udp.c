@@ -37,19 +37,18 @@ Boston, MA  02110-1301, USA.
 #       define UDPioctl            ioctl
 #       define UDPClose            tnclose
         typedef int UDPSocket;
-        static struct sockaddr_storage _sender_address;
 
 #   elif defined(__WIN32__)
 
 #       include <winsock.h>
-#       define UDPError            SOCKET_ERROR
-#       define UDPInvalidSocket    INVALID_SOCKET
-#       define UDPioctl            ioctlsocket
-#       define UDPClose            closesocket
-        static struct sockaddr_in _sender_address;
+#       define UDPError             SOCKET_ERROR
+#       define UDPInvalidSocket     INVALID_SOCKET
+#       define UDPioctl             ioctlsocket
+#       define UDPClose             closesocket
 
 #   endif
 
+static struct sockaddr_storage _sender_address;
 socklen_t _sender_len = 0;
 void os_init(void);
 void udp_init(void);
@@ -127,7 +126,6 @@ int udp_read(int socket)
         {
             case -1: // error
             {
-                socket=-1;
                 break;
             }
             case 0: // no data
@@ -149,7 +147,7 @@ int udp_read(int socket)
                     case -1:  // error
                     case 0:   // error
                     {
-                        socket=i=-1;
+                        i=-1;
                         break;
                     }
                     default: // wooo! data!

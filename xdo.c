@@ -20,10 +20,29 @@ Boston, MA  02110-1301, USA.
 
 #include "xdo.h"
 
-#if defined(__CYGWIN__)
+#if defined(__CYGWIN__)||defined(__WIN32__)
 
-#include <sys/cygwin.h>
-#include <winable.h>
+#if defined(__CYGWIN__)
+#   include <sys/cygwin.h>
+#   include <winable.h>
+#else
+#   include <windows.h>
+
+// fail on bc5
+#define INPUT_KEYBOARD    1
+#define INPUT_MOUSE       2
+typedef struct {
+    int type;
+    union {
+        struct Key { int wVk; int dwFlags; } ki;
+        struct Mouse { int wVk; int dwFlags; } mi;
+    };
+} INPUT;
+void SendInput(int,INPUT *,int);
+
+#endif
+
+
 #include <stdio.h>
 
 #include "keys.c"
@@ -33,16 +52,23 @@ void alt(unsigned char);
 
 xdo_t xdo_new(void *xdo)
 {
+    (void)xdo;
+#if defined(__CYGWIN__)
     cygwin_internal(CW_SYNC_WINENV);
+#endif
     return((xdo_t)1);
 }
 
 void xdo_free(xdo_t xdo)
 {
+    (void)xdo;
 }
 
 void xdo_keysequence(xdo_t xdo,XDOWindow window,char *text,int delay)
 {
+    (void)xdo;
+    (void)window;
+    (void)delay;
     if(text)
     {
         if(!strcmpi(text,"Escape"))
@@ -95,6 +121,9 @@ void alt(unsigned char k)
 void xdo_mousedown(xdo_t xdo,XDOWindow w,int button)
 {
     POINT point;
+
+    (void)xdo;
+    (void)w;
     if(GetCursorPos(&point))
     {
         INPUT i;
@@ -103,20 +132,15 @@ void xdo_mousedown(xdo_t xdo,XDOWindow w,int button)
         i.type=INPUT_MOUSE;
         i.mi.dwFlags=button==1?MOUSEEVENTF_LEFTDOWN:MOUSEEVENTF_RIGHTDOWN;
         SendInput(1,&i,sizeof(i));
-
-/*
-        mouse_event(button==1?MOUSEEVENTF_LEFTDOWN:MOUSEEVENTF_RIGHTDOWN,
-                    point.x,
-                    point.y,
-                    0,
-                    0);
-*/
     }
 }
 
 void xdo_mouselocation(xdo_t xdo,int *x,int *y,int *screen)
 {
     POINT point;
+
+    (void)xdo;
+    (void)screen;
     if(GetCursorPos(&point))
     {
         *x=(int)point.x;
@@ -126,12 +150,17 @@ void xdo_mouselocation(xdo_t xdo,int *x,int *y,int *screen)
 
 void xdo_mousemove(xdo_t xdo,int x,int y,int screen)
 {
+    (void)xdo;
+    (void)screen;
     SetCursorPos(x,y);
 }
 
 void xdo_mouseup(xdo_t xdo,XDOWindow window,int button)
 {
     POINT point;
+
+    (void)xdo;
+    (void)window;
     if(GetCursorPos(&point))
     {
         mouse_event(button==1?MOUSEEVENTF_LEFTUP:MOUSEEVENTF_RIGHTUP,
@@ -144,6 +173,7 @@ void xdo_mouseup(xdo_t xdo,XDOWindow window,int button)
 
 void xdo_window_get_active(xdo_t xdo,XDOWindow *win)
 {
+    (void)xdo;
     *win=GetActiveWindow();
 }
 

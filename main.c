@@ -29,6 +29,7 @@ Boston, MA  02110-1301, USA.
 buffer_callback_fn _dispatch[0x10];
 Options _options;
 
+#if !defined(__WIN32__)
 int main(int argc,char **argv)
 {
     init();
@@ -57,6 +58,22 @@ int main(int argc,char **argv)
     }
     return(0);
 }
+#else
+int PASCAL WinMain
+(
+    HINSTANCE hCurInstance,
+    HINSTANCE hPrevInstance,
+    LPSTR lpCmdLine,
+    int nCmdShow
+)
+{
+    (void)hCurInstance;
+    (void)hPrevInstance;
+    (void)lpCmdLine;
+    (void)nCmdShow;
+    return(0);
+}
+#endif
 
 void init(void)
 {
@@ -90,7 +107,7 @@ void run(void)
     {
         while(!done)
         {
-            done=(n=udp_read(_options._socket))<0;
+            done=(uint8)((n=udp_read(_options._socket))<0);
             if(!n)
             {
                 ansleep(_options._sleep);
@@ -292,6 +309,8 @@ void dispatch_ping(uint8 *data,uint32 len)
 {
     static MsgPing ping;
 
+    (void)data;
+    (void)len;
     memset(&ping,0,sizeof(MsgPing));
     ping._hdr._type=MSG_PING;
     ping._term._term=0xff;

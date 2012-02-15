@@ -58,7 +58,7 @@ uint32 buffer_check(void)
 {
     uint8 msg[_buffer_max];
     uint32 n_msgs=0,pos=0,msg_len;
-    uint8 state=0;
+    uint16 state=0;
 
     while(pos<_buffer_length)
     {
