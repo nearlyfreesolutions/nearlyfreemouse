@@ -40,6 +40,11 @@ Boston, MA  02110-1301, USA.
 
 #   define MSG_WHOSTHERE        0xff
 
+#   ifdef __BORLANDC__
+#       pragma pack(push)
+#       pragma pack(1)
+#   endif
+
     typedef struct {
         uint8 _type;
         uint8 _code[4];
@@ -104,6 +109,10 @@ Boston, MA  02110-1301, USA.
         uint8 _type;
         char  _sym[1];
     } PACKSTRUCT MsgKeySym;
+
+#   ifdef __BORLANDC__
+#       pragma pack(pop)
+#   endif
 
 #endif
 

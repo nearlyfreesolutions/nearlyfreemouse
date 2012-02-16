@@ -23,8 +23,9 @@ Boston, MA  02110-1301, USA.
 #if defined(__CYGWIN__)||defined(__WIN32__)
 
 #if defined(__CYGWIN__)
-#   include <sys/cygwin.h>
+#   define KEYEVENTF_SCANCODE 0x00000008
 #   include <winable.h>
+#   include <sys/cygwin.h>
 #else
 #   include <windows.h>
 
@@ -50,6 +51,7 @@ void SendInput(int i,INPUT *in,int l){(void)i;(void)in;(void)l;}
 
 void key(unsigned char);
 void alt(unsigned char);
+void send_char(char);
 
 xdo_t xdo_new(void *xdo)
 {
@@ -67,9 +69,12 @@ void xdo_free(xdo_t xdo)
 
 void xdo_keysequence(xdo_t xdo,XDOWindow window,char *text,int delay)
 {
+    VKey *vk=find_vkey(text);
+
     (void)xdo;
     (void)window;
     (void)delay;
+    /*
     if(text)
     {
         if(!strcmpi(text,"Escape"))
@@ -90,6 +95,40 @@ void xdo_keysequence(xdo_t xdo,XDOWindow window,char *text,int delay)
             fflush(0);
         }
     }
+    */
+
+    if(vk)
+    {
+        if(!vk->_alt)
+        {
+            key(vk->_vkey);
+        }
+        else
+        {
+            alt(vk->_vkey);
+        }
+    }
+    else
+    {
+        Key *k=find_key(text);
+
+        send_char(k?k->_ch:*text);
+    }
+}
+
+void send_keych(unsigned char k,unsigned char up)
+{
+    INPUT i;
+
+    memset(&i,0,sizeof(i));
+    i.type=INPUT_KEYBOARD;
+    i.ki.wScan=k;
+    i.ki.dwFlags=KEYEVENTF_SCANCODE;
+    if(up)
+    {
+        i.ki.dwFlags=KEYEVENTF_KEYUP;
+    }
+    SendInput(1,&i,sizeof(i));
 }
 
 void send_key(unsigned char k,unsigned char up)
@@ -104,12 +143,37 @@ void send_key(unsigned char k,unsigned char up)
         i.ki.dwFlags=KEYEVENTF_KEYUP;
     }
     SendInput(1,&i,sizeof(i));
+    Sleep(25);
 }
 
 void key(unsigned char k)
 {
     send_key(k,0);
     send_key(k,1);
+}
+
+void shift(unsigned char k)
+{
+    send_key(VK_SHIFT,0);
+    key(k);
+    send_key(VK_SHIFT,1);
+}
+
+void send_char(char ch)
+{
+    uint16 code=VkKeyScanEx(ch,0);
+    // with an n.z. accent
+    uint8 shft=(uint8)((code>>8)&0x0ff);
+    uint8 k=(uint8)(code&0x0ff);
+
+    if(shft&1)
+    {
+        shift(k);
+    }
+    else
+    {
+        key(k);
+    }
 }
 
 void alt(unsigned char k)

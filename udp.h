@@ -31,7 +31,11 @@ Boston, MA  02110-1301, USA.
 #       include <winsock.h>
         typedef SOCKET UDPSocket;
         typedef int socklen_t;
+#   elif defined(__CYGWIN__)
+#       include <cygwin/socket.h>
+#       include <cygwin/in.h>
 #   endif
+
 
     int udp_connect(uint16 port);
     int udp_bind(uint16 port,uint8 bnd);

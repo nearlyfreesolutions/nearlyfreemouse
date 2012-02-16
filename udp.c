@@ -103,7 +103,7 @@ int udp_bind(uint16 port,uint8 bnd)
 
 void udp_closesocket(int socket)
 {
-#if defined(__linux)
+#if defined(__linux)||defined(__CYGWIN__)
     close(socket);
 #else
     closesocket(socket);
@@ -211,13 +211,13 @@ void udp_init(void)
 
 #if defined(linux) || defined(__CYGWIN__)
 
-void os_init() 
+void os_init()
 {
 }
 
 #else
 
-void os_init() 
+void os_init()
 {
     WORD wVersionRequested;
     WSADATA wsaData;

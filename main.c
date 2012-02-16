@@ -38,7 +38,7 @@ void quit(void);
 
 int main(int argc,char **argv)
 {
-    go(argv,argv);
+    go(argc,argv);
     return(0);
 }
 
