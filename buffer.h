@@ -33,6 +33,5 @@ Boston, MA  02110-1301, USA.
     void buffer_test(void);
     void buffer_callback(buffer_callback_fn);
 
-
 #endif
 

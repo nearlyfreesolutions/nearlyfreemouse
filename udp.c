@@ -227,7 +227,7 @@ void os_init()
 
     err = WSAStartup( wVersionRequested, &wsaData );
     if ( err != 0 ) {
-        MessageBox(NULL,"Cannot Setup Winsock.dll!","Error",MB_OK);
+        MessageBox(NULL,"Cannot Setup Winsock.dll!","Error.",MB_OK);
         PostQuitMessage(0);
         return;
     }
@@ -235,7 +235,7 @@ void os_init()
     if ( LOBYTE( wsaData.wVersion ) != 1 ||
           HIBYTE( wsaData.wVersion ) != 1 ) {
         WSACleanup();
-        MessageBox(NULL,"Cannot Setup Winsock.dll!","Error",MB_OK);
+        MessageBox(NULL,"Cannot Setup Winsock.dll!","Error.",MB_OK);
         PostQuitMessage(0);
         return;
     }

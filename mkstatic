@@ -24,3 +24,4 @@ cd ../
 
 tar -zcf ${DEST} nearlyfreemouse/nearlyfreemouse nearlyfreemouse/nearlyfreemouse.autostart nearlyfreemouse/nearlyfreemouse.desktop
 
+

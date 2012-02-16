@@ -143,7 +143,7 @@ void w32init(HINSTANCE hInstance)
 
 void w32destroy(void)
 {
-    // clean up
+    // clean up.
     Shell_NotifyIcon(NIM_DELETE,&_static._nd);
     DestroyWindow(_static._window);
     DestroyIcon(_static._icon);

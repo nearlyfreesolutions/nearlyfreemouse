@@ -30,7 +30,8 @@ Boston, MA  02110-1301, USA.
 #   include <windows.h>
 
 #if (__BORLANDC__ < 0x0550)
-// fail on bc5
+// fails on bc5
+#warning This will not run correctly
 #define INPUT_KEYBOARD    1
 #define INPUT_MOUSE       2
 typedef struct {

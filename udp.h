@@ -36,7 +36,6 @@ Boston, MA  02110-1301, USA.
 #       include <cygwin/in.h>
 #   endif
 
-
     int udp_connect(uint16 port);
     int udp_bind(uint16 port,uint8 bnd);
     void udp_closesocket(int socket);

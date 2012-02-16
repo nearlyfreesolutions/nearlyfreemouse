@@ -26,6 +26,7 @@ Boston, MA  02110-1301, USA.
 String _escape = "Escape";
 String _altltab = "Alt_L+Tab";
 String _altlf4 = "Alt_L+F4";
+String _super_l = "Super_L";
 
 typedef struct {
     const char **_key;
@@ -45,6 +46,7 @@ VKey _vkeys[] = {
     { &_altlf4, VK_F4, 1 },
     { &_esc, VK_ESCAPE },
 	{ &_super, VK_LWIN },
+	{ &_super_l, VK_LWIN },
 	{ &_del, VK_DELETE },
     { &_altf4, VK_F4, 1 },
 	{ &_space_b, VK_SPACE },

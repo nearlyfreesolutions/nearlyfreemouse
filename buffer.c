@@ -166,4 +166,3 @@ void buffer_test(void)
     buffer_write(d4,sizeof(d4)); while(buffer_check());
 }
 
-

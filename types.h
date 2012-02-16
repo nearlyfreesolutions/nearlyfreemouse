@@ -55,10 +55,9 @@ Boston, MA  02110-1301, USA.
 
 #   else
 
-#       error This platform is not implemented.
+#       error This platform is not supported.
 
 #   endif
-
 
 #endif
 

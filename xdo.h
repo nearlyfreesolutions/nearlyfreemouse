@@ -38,10 +38,11 @@ Boston, MA  02110-1301, USA.
         extern char *optarg;
 #   endif
 
-
 #      define CURRENTWINDOW 0
+
         typedef void *xdo_t;
         typedef HWND XDOWindow;
+
         xdo_t xdo_new(void *);
         void xdo_free(xdo_t);
         void xdo_keysequence(xdo_t,XDOWindow,char *,int);
